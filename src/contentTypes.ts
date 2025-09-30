@@ -1,6 +1,6 @@
 type PartnerSchool = {
     country: string;
-    name: string;
+    title: string;
     link: string;
 }
 

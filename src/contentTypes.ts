@@ -5,8 +5,10 @@ type PartnerSchool = {
 }
 
 type PartnerSchoolWithCoordinates = PartnerSchool & {
-    latitude: number;
-    longitude: number;
+    coordinates: {
+        lat: number;
+        lng: number;
+    }
 }
 
 type DestinationResponse = {

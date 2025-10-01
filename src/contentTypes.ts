@@ -25,4 +25,5 @@ export type {
     PartnerSchool,
     DestinationResponse,
     PartnerSchoolWithCoordinates,
+    DestinationWithCoordinatesResponse
 };

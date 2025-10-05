@@ -22,6 +22,14 @@ type DestinationWithCoordinatesResponse = {
         [program: string]: PartnerSchoolWithCoordinates[];
     }
 }
+type ProfileResponse = {
+    id: string;
+    userName: string;
+    email: string;
+    registeredAt: string;
+    favorites: string[];
+    documents: string[];
+};
 
 
 type ContactMessage = {
@@ -36,5 +44,6 @@ export type {
     DestinationResponse,
     PartnerSchoolWithCoordinates,
     DestinationWithCoordinatesResponse,
-    ContactMessage
+    ContactMessage,
+    ProfileResponse
 };

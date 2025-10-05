@@ -5,32 +5,35 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "./*": {
-        "types": "./dist/*.d.ts",
-        "default": "./dist/*.js"
-      }
+        ".": {
+            "types": "./dist/index.d.ts",
+            "default": "./dist/index.js"
+        },
+        "./*": {
+            "types": "./dist/*.d.ts",
+            "default": "./dist/*.js"
+        }
     },
     "typesVersions": {
-      "*": {
-        "*": [
-          "dist/*"
-        ]
-      }
+        "*": {
+            "*": [
+                "dist/*"
+            ]
+        }
     },
     "files": [
-      "dist"
+        "dist"
     ],
     "scripts": {
-      "build": "tsc",
-      "prepare": "npm run build"
+        "build": "tsc",
+        "prepare": "npm run build"
     },
     "private": true,
     "author": "Karri Partanen, Elli Riskala, Samu Kangas, Odette Uzamukunda",
     "devDependencies": {
-      "typescript": "^5.0.0"
+        "typescript": "^5.0.0"
+    },
+    "dependencies": {
+        "react": "^19.1.1"
     }
-  }
+}

@@ -23,9 +23,18 @@ type DestinationWithCoordinatesResponse = {
     }
 }
 
+
+type ContactMessage = {
+    name: string;
+    email: string;
+    subject: string;
+    message: string; 
+}
+
 export type {
     PartnerSchool,
     DestinationResponse,
     PartnerSchoolWithCoordinates,
-    DestinationWithCoordinatesResponse
+    DestinationWithCoordinatesResponse,
+    ContactMessage
 };

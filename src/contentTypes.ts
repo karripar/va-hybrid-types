@@ -23,15 +23,15 @@ type DestinationWithCoordinatesResponse = {
   };
 };
 type ProfileResponse = {
-  id: string;
-  userName: string;
-  email: string;
-  registeredAt: string;
-  favorites: string[];
-  documents: string[];
-  avatarUrl: string | null;
-  exchangeBadge: boolean;
-  linkedinUrl: string | null;
+    id: string;
+    userName: string;
+    email: string;
+    registeredAt: string;
+    favorites: string[];
+    documents: string[];
+    exchangeBadge?: boolean;
+    avatarUrl?: string; // ei ole pakollinen
+    linkedinUrl?: string; // Myös valinnainen
 };
 
 type ContactMessage = {

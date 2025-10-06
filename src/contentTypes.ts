@@ -34,10 +34,18 @@ type ProfileResponse = {
   linkedinUrl: string | null;
 };
 
+type ContactMessage = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
+
 export type {
   PartnerSchool,
   DestinationResponse,
   PartnerSchoolWithCoordinates,
   DestinationWithCoordinatesResponse,
+  ContactMessage,
   ProfileResponse,
 };

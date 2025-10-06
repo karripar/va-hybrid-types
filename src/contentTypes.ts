@@ -29,6 +29,9 @@ type ProfileResponse = {
     registeredAt: string;
     favorites: string[];
     documents: string[];
+    exchangeBadge?: boolean;
+    avatarUrl?: string; // ei ole pakollinen
+    linkedinUrl?: string; // Myös valinnainen
 };
 
 

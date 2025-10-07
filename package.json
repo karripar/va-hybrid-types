@@ -35,6 +35,7 @@
     },
     "dependencies": {
         "next": "^15.5.4",
-        "react": "^19.2.0"
+        "react": "^19.2.0",
+        "va-hybrid-types": "github:karripar/va-hybrid-types"
     }
 }

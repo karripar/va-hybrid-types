@@ -22,16 +22,24 @@ type DestinationWithCoordinatesResponse = {
         [program: string]: PartnerSchoolWithCoordinates[];
     }
 }
+
+type Document = {
+  id: string;
+  name: string;
+  url: string;
+  uploadedAt: string;
+};
+
 type ProfileResponse = {
     id: string;
     userName: string;
     email: string;
     registeredAt: string;
     favorites: string[];
-    documents: string[];
+    documents: Document[]; 
     exchangeBadge?: boolean;
-    avatarUrl?: string; // ei ole pakollinen
-    linkedinUrl?: string; // Myös valinnainen
+    avatarUrl?: string;
+    linkedinUrl?: string;
 };
 
 
@@ -48,5 +56,6 @@ export type {
     PartnerSchoolWithCoordinates,
     DestinationWithCoordinatesResponse,
     ContactMessage,
-    ProfileResponse
+    ProfileResponse,
+    Document
 };

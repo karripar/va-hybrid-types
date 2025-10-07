@@ -22,22 +22,30 @@ type DestinationWithCoordinatesResponse = {
         [program: string]: PartnerSchoolWithCoordinates[];
     }
 }
+
 type ProfileResponse = {
     id: string;
     userName: string;
     email: string;
     registeredAt: string;
     favorites: string[];
-    documents: string[];
+    documents: Document[]; 
     exchangeBadge?: boolean;
-    avatarUrl?: string; // ei ole pakollinen
-    linkedinUrl?: string; // Myös valinnainen
-};
+    avatarUrl?: string;
+    linkedinUrl?: string;
+}
+type Document = {
+  id: string;
+  name: string;
+  url: string;
+  uploadedAt: string;
+}
 
 export type {
     PartnerSchool,
     DestinationResponse,
     PartnerSchoolWithCoordinates,
     DestinationWithCoordinatesResponse,
-    ProfileResponse
+    ProfileResponse,
+    Document
 };

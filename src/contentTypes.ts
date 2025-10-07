@@ -23,6 +23,13 @@ type DestinationWithCoordinatesResponse = {
     }
 }
 
+type Document = {
+  id: string;
+  name: string;
+  url: string;
+  uploadedAt: string;
+};
+
 type ProfileResponse = {
     id: string;
     userName: string;
@@ -33,13 +40,7 @@ type ProfileResponse = {
     exchangeBadge?: boolean;
     avatarUrl?: string;
     linkedinUrl?: string;
-}
-type Document = {
-  id: string;
-  name: string;
-  url: string;
-  uploadedAt: string;
-}
+};
 
 export type {
     PartnerSchool,

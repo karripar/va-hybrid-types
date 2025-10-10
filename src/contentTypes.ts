@@ -23,17 +23,24 @@ type DestinationWithCoordinatesResponse = {
   };
 };
 
+type Document = {
+  id: string;
+  name: string;
+  url: string;
+  uploadedAt: string;
+};
+
 type ProfileResponse = {
-    id: string;
-    userName: string;
-    email: string;
-    registeredAt: string;
-    user_level_id: number;
-    favorites: string[];
-    documents: string[];
-    exchangeBadge?: boolean;
-    avatarUrl?: string; // ei ole pakollinen
-    linkedinUrl?: string; // Myös valinnainen
+  id: string;
+  userName: string;
+  email: string;
+  registeredAt: string;
+  user_level_id: number;
+  favorites: string[];
+  documents: Document[];
+  exchangeBadge?: boolean;
+  avatarUrl?: string;
+  linkedinUrl?: string;
 };
 
 type ContactMessage = {
@@ -50,4 +57,5 @@ export type {
   DestinationWithCoordinatesResponse,
   ContactMessage,
   ProfileResponse,
+  Document,
 };

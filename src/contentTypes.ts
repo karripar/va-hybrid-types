@@ -22,11 +22,13 @@ type DestinationWithCoordinatesResponse = {
     [program: string]: PartnerSchoolWithCoordinates[];
   };
 };
+
 type ProfileResponse = {
     id: string;
     userName: string;
     email: string;
     registeredAt: string;
+    user_level_id: number;
     favorites: string[];
     documents: string[];
     exchangeBadge?: boolean;

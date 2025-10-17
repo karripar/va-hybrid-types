@@ -1,8 +1,13 @@
+// create types as needed
+import { ProfileResponse } from "./contentTypes";
 
-type UserLevel = { // placeholder for future use, create types as needed like this
-    user_level_id: number;
-}
-
-export type {
-    UserLevel
+type UserLevel = {
+  user_level_id: number;
+  level_name: "Admin" | "User" | "Guest";
 };
+
+type UserWithLevel = ProfileResponse & { level: UserLevel };
+
+type TokenContent = Pick<ProfileResponse, "id"> & Pick<UserLevel, "level_name">;
+
+export type { UserWithLevel, TokenContent };

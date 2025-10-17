@@ -31,7 +31,8 @@
     "private": true,
     "author": "Karri Partanen, Elli Riskala, Samu Kangas, Odette Uzamukunda",
     "devDependencies": {
-        "typescript": "^5.0.0"
+        "typescript": "^5.0.0",
+        "va-hybrid-types": "github:karripar/va-hybrid-types"
     },
     "dependencies": {
         "next": "^15.5.4",

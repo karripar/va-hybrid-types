@@ -1,27 +1,27 @@
 type PartnerSchool = {
-    country: string;
-    title: string;
-    link: string;
-}
+  country: string;
+  title: string;
+  link: string;
+};
 
 type PartnerSchoolWithCoordinates = PartnerSchool & {
-    coordinates: {
-        lat: number;
-        lng: number;
-    }
-}
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+};
 
 type DestinationResponse = {
-    destinations: {
-        [program: string]: PartnerSchool[];
-    }
-}
+  destinations: {
+    [program: string]: PartnerSchool[];
+  };
+};
 
 type DestinationWithCoordinatesResponse = {
-    destinations: {
-        [program: string]: PartnerSchoolWithCoordinates[];
-    }
-}
+  destinations: {
+    [program: string]: PartnerSchoolWithCoordinates[];
+  };
+};
 
 type Document = {
   id: string;
@@ -40,33 +40,34 @@ type ApplicationDocument = {
 };
 
 type ProfileResponse = {
-    id: string;
-    userName: string;
-    email: string;
-    registeredAt: string;
-    favorites: string[];
-    documents: Document[]; 
-    exchangeBadge?: boolean;
-    avatarUrl?: string;
-    applications?: string[];
+  id: string;
+  userName: string;
+  email: string;
+  registeredAt: string;
+  user_level_id: number;
+  favorites: string[];
+  documents: Document[];
+  exchangeBadge?: boolean;
+  avatarUrl?: string;
+  linkedinUrl?: string;
+  applications?: string[];
 };
 
-
 type ContactMessage = {
-    name: string;
-    email: string;
-    subject: string;
-    message: string; 
-}
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+};
 
 export type {
-    PartnerSchool,
-    DestinationResponse,
-    PartnerSchoolWithCoordinates,
-    DestinationWithCoordinatesResponse,
-    ContactMessage,
-    ProfileResponse,
-    Document,
-    ApplicationsResponse,
-    ApplicationDocument
+  PartnerSchool,
+  DestinationResponse,
+  PartnerSchoolWithCoordinates,
+  DestinationWithCoordinatesResponse,
+  ContactMessage,
+  ProfileResponse,
+  Document,
+  ApplicationsResponse,
+  ApplicationDocument
 };

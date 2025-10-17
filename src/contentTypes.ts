@@ -29,6 +29,15 @@ type Document = {
   url: string;
   uploadedAt: string;
 };
+type ApplicationsResponse = {
+    [key: string]: any;  
+}
+type ApplicationDocument = {
+    id: string;
+    name: string;
+    url: string;
+    uploadedAt: string;
+};
 
 type ProfileResponse = {
     id: string;
@@ -39,7 +48,7 @@ type ProfileResponse = {
     documents: Document[]; 
     exchangeBadge?: boolean;
     avatarUrl?: string;
-    linkedinUrl?: string;
+    applications?: string[];
 };
 
 
@@ -57,5 +66,7 @@ export type {
     DestinationWithCoordinatesResponse,
     ContactMessage,
     ProfileResponse,
-    Document
+    Document,
+    ApplicationsResponse,
+    ApplicationDocument
 };

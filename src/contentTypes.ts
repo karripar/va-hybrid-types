@@ -106,6 +106,9 @@ type ExtendedApplicationsResponse = {
 };
 
 
+type LegacyApplicationsResponse = ExtendedApplicationPhaseData[];
+
+
 type ApplicationDocument = {
   id: string;
   applicationId: string;
@@ -222,6 +225,7 @@ export type {
   ExtendedApplicationPhaseData,
   ExtendedApplicationsResponse,
   ExtendedApplicationDocument,
+  LegacyApplicationsResponse,
   // Contact message types
   ContactMessageInput,
   ContactMessageResponse,

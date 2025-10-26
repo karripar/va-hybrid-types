@@ -30,27 +30,32 @@ type Document = {
   uploadedAt: string;
 };
 
-type ApplicationStatus = 
-  | "not_started" 
-  | "in_progress" 
+// Base application status from the original types
+type ApplicationStatus =
+  | "not_started"
+  | "in_progress"
   | "completed" 
   | "pending_review"
   | "approved"
   | "rejected";
 
-type ApplicationPhase = 
-  | "esihaku" 
-  | "nomination" 
-  | "apurahat" 
+// Extended status including draft and submitted
+type ExtendedApplicationStatus = ApplicationStatus | "draft" | "submitted";
+
+type ApplicationPhase =
+  | "esihaku"
+  | "nomination"
+  | "apurahat"
   | "vaihdon_jalkeen";
 
-type DocumentStatus = 
-  | "uploaded" 
-  | "processing" 
-  | "approved" 
-  | "rejected" 
+type DocumentStatus =
+  | "uploaded"
+  | "processing"
+  | "approved"
+  | "rejected"
   | "needs_revision";
 
+// Base ApplicationPhaseData
 type ApplicationPhaseData = {
   status: ApplicationStatus;
   completedAt?: string;
@@ -62,6 +67,22 @@ type ApplicationPhaseData = {
   reviewNotes?: string;
 };
 
+// Extended ApplicationPhaseData with additional properties
+type ExtendedApplicationPhaseData = {
+  phase: string;
+  data?: unknown;
+  documents: ApplicationDocument[];
+  submittedAt?: string | null;
+  status: ExtendedApplicationStatus;
+  completedAt?: string;
+  deadline?: string;
+  notes?: string;
+  reviewedAt?: string;
+  reviewNotes?: string;
+  reviewedBy?: string;
+};
+
+// Base ApplicationsResponse
 type ApplicationsResponse = {
   userId: string;
   esihaku?: ApplicationPhaseData;
@@ -75,6 +96,20 @@ type ApplicationsResponse = {
   updatedAt: string;
 };
 
+// Extended ApplicationsResponse with applications array and Finnish phase names
+type ExtendedApplicationsResponse = {
+  userId: string;
+  esihaku?: ExtendedApplicationPhaseData;
+  nomination?: ExtendedApplicationPhaseData;
+  apurahat?: ExtendedApplicationPhaseData;
+  vaihdon_jalkeen?: ExtendedApplicationPhaseData;
+  applications: ExtendedApplicationPhaseData[];
+  currentPhase: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+// Base ApplicationDocument
 type ApplicationDocument = {
   id: string;
   applicationId: string;
@@ -87,6 +122,22 @@ type ApplicationDocument = {
   mimeType: string;
   isRequired: boolean;
   status: DocumentStatus;
+  uploadedBy: string;
+};
+
+// Extended ApplicationDocument with optional fields
+type ExtendedApplicationDocument = {
+  id: string;
+  applicationId: string;
+  applicationPhase: ApplicationPhase | string;
+  documentType: string;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: string;
+  fileSize: number;
+  mimeType: string;
+  isRequired?: boolean;
+  status?: DocumentStatus | string;
   uploadedBy: string;
 };
 
@@ -152,5 +203,10 @@ export type {
   ApplicationPhase,
   DocumentStatus,
   ApplicationTask,
-  ExternalLink
+  ExternalLink,
+  // Extended types
+  ExtendedApplicationStatus,
+  ExtendedApplicationPhaseData,
+  ExtendedApplicationsResponse,
+  ExtendedApplicationDocument
 };

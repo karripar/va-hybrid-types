@@ -139,7 +139,7 @@ type ContactMessageInput = {
 };
 
 type ContactResponse = {
-  id: string,
+  _id: string,
   responderName: string,
   responderEmail: string,
   message: string,
@@ -147,7 +147,7 @@ type ContactResponse = {
 };
 
 type ContactMessageResponse = {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   subject: string;

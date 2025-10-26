@@ -130,11 +130,32 @@ type ProfileResponse = {
   };
 };
 
-type ContactMessage = {
+
+type ContactMessageInput = {
   name: string;
   email: string;
   subject: string;
   message: string;
+};
+
+type ContactResponse = {
+  id: string,
+  responderName: string,
+  responderEmail: string,
+  message: string,
+  createdAt: string,
+};
+
+type ContactMessageResponse = {
+  id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: "new" | "replied" | "closed";
+  createdAt: string;
+  updatedAt: string;
+  responses?: ContactResponse[];
 };
 
 export type {
@@ -142,7 +163,6 @@ export type {
   DestinationResponse,
   PartnerSchoolWithCoordinates,
   DestinationWithCoordinatesResponse,
-  ContactMessage,
   ProfileResponse,
   Document,
   ApplicationsResponse,
@@ -152,5 +172,8 @@ export type {
   ApplicationPhase,
   DocumentStatus,
   ApplicationTask,
-  ExternalLink
+  ExternalLink,
+  ContactMessageInput,
+  ContactMessageResponse,
+  ContactResponse
 };

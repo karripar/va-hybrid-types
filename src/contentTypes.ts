@@ -1,4 +1,4 @@
-type PartnerSchool = {
+﻿type PartnerSchool = {
   country: string;
   title: string;
   link: string;
@@ -29,14 +29,85 @@ type Document = {
   url: string;
   uploadedAt: string;
 };
+
+type ApplicationStatus = 
+  | "not_started" 
+  | "in_progress" 
+  | "completed" 
+  | "pending_review"
+  | "approved"
+  | "rejected";
+
+type ApplicationPhase = 
+  | "esihaku" 
+  | "nomination" 
+  | "apurahat" 
+  | "vaihdon_jalkeen";
+
+type DocumentStatus = 
+  | "uploaded" 
+  | "processing" 
+  | "approved" 
+  | "rejected" 
+  | "needs_revision";
+
+type ApplicationPhaseData = {
+  status: ApplicationStatus;
+  completedAt?: string;
+  deadline?: string;
+  documents: ApplicationDocument[];
+  notes?: string;
+  submittedAt?: string;
+  reviewedAt?: string;
+  reviewNotes?: string;
+};
+
 type ApplicationsResponse = {
-    [key: string]: any;  
-}
+  userId: string;
+  esihaku?: ApplicationPhaseData;
+  nomination?: ApplicationPhaseData;
+  grants?: {
+    erasmus?: ApplicationPhaseData;
+    kela?: ApplicationPhaseData;
+  };
+  postExchange?: ApplicationPhaseData;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type ApplicationDocument = {
-    id: string;
-    name: string;
-    url: string;
-    uploadedAt: string;
+  id: string;
+  applicationId: string;
+  applicationPhase: ApplicationPhase;
+  documentType: string;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: string;
+  fileSize: number;
+  mimeType: string;
+  isRequired: boolean;
+  status: DocumentStatus;
+  uploadedBy: string;
+};
+
+type ApplicationTask = {
+  id: string;
+  phaseId: string;
+  title: string;
+  description: string;
+  isRequired: boolean;
+  isCompleted: boolean;
+  completedAt?: string;
+  dueDate?: string;
+  documentTypes?: string[];
+  externalLinks?: ExternalLink[];
+};
+
+type ExternalLink = {
+  title: string;
+  url: string;
+  description: string;
+  category?: "application" | "information" | "support";
 };
 
 type ProfileResponse = {
@@ -44,13 +115,19 @@ type ProfileResponse = {
   userName: string;
   email: string;
   registeredAt: string;
-  user_level_id: number;
+  user_level_id?: number;
   favorites: string[];
   documents: Document[];
   exchangeBadge?: boolean;
   avatarUrl?: string;
   linkedinUrl?: string;
-  applications?: string[];
+  applications?: ApplicationsResponse;
+  applicationProgress?: {
+    overallProgress: number;
+    currentPhase: ApplicationPhase;
+    nextDeadline?: string;
+    completedPhases: ApplicationPhase[];
+  };
 };
 
 type ContactMessage = {
@@ -69,5 +146,11 @@ export type {
   ProfileResponse,
   Document,
   ApplicationsResponse,
-  ApplicationDocument
+  ApplicationDocument,
+  ApplicationPhaseData,
+  ApplicationStatus,
+  ApplicationPhase,
+  DocumentStatus,
+  ApplicationTask,
+  ExternalLink
 };

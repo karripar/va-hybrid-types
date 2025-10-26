@@ -30,7 +30,6 @@ type Document = {
   uploadedAt: string;
 };
 
-// Base application status from the original types
 type ApplicationStatus =
   | "not_started"
   | "in_progress"
@@ -39,7 +38,6 @@ type ApplicationStatus =
   | "approved"
   | "rejected";
 
-// Extended status including draft and submitted
 type ExtendedApplicationStatus = ApplicationStatus | "draft" | "submitted";
 
 type ApplicationPhase =
@@ -55,7 +53,6 @@ type DocumentStatus =
   | "rejected"
   | "needs_revision";
 
-// Base ApplicationPhaseData
 type ApplicationPhaseData = {
   status: ApplicationStatus;
   completedAt?: string;
@@ -67,7 +64,6 @@ type ApplicationPhaseData = {
   reviewNotes?: string;
 };
 
-// Extended ApplicationPhaseData with additional properties
 type ExtendedApplicationPhaseData = {
   phase: string;
   data?: unknown;
@@ -82,7 +78,7 @@ type ExtendedApplicationPhaseData = {
   reviewedBy?: string;
 };
 
-// Base ApplicationsResponse
+
 type ApplicationsResponse = {
   userId: string;
   esihaku?: ApplicationPhaseData;
@@ -96,7 +92,7 @@ type ApplicationsResponse = {
   updatedAt: string;
 };
 
-// Extended ApplicationsResponse with applications array and Finnish phase names
+
 type ExtendedApplicationsResponse = {
   userId: string;
   esihaku?: ExtendedApplicationPhaseData;
@@ -109,7 +105,7 @@ type ExtendedApplicationsResponse = {
   updatedAt?: string;
 };
 
-// Base ApplicationDocument
+
 type ApplicationDocument = {
   id: string;
   applicationId: string;
@@ -125,7 +121,6 @@ type ApplicationDocument = {
   uploadedBy: string;
 };
 
-// Extended ApplicationDocument with optional fields
 type ExtendedApplicationDocument = {
   id: string;
   applicationId: string;
@@ -181,11 +176,31 @@ type ProfileResponse = {
   };
 };
 
-type ContactMessage = {
+type ContactMessageInput = {
   name: string;
   email: string;
   subject: string;
   message: string;
+};
+
+type ContactResponse = {
+  _id: string,
+  responderName: string,
+  responderEmail: string,
+  message: string,
+  createdAt: string,
+};
+
+type ContactMessageResponse = {
+  _id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: "new" | "replied" | "closed";
+  createdAt: string;
+  updatedAt: string;
+  responses?: ContactResponse[];
 };
 
 export type {
@@ -193,7 +208,6 @@ export type {
   DestinationResponse,
   PartnerSchoolWithCoordinates,
   DestinationWithCoordinatesResponse,
-  ContactMessage,
   ProfileResponse,
   Document,
   ApplicationsResponse,
@@ -204,9 +218,12 @@ export type {
   DocumentStatus,
   ApplicationTask,
   ExternalLink,
-  // Extended types
   ExtendedApplicationStatus,
   ExtendedApplicationPhaseData,
   ExtendedApplicationsResponse,
-  ExtendedApplicationDocument
+  ExtendedApplicationDocument,
+  // Contact message types
+  ContactMessageInput,
+  ContactMessageResponse,
+  ContactResponse
 };

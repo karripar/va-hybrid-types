@@ -30,25 +30,27 @@ type Document = {
   uploadedAt: string;
 };
 
-type ApplicationStatus = 
-  | "not_started" 
-  | "in_progress" 
+type ApplicationStatus =
+  | "not_started"
+  | "in_progress"
   | "completed" 
   | "pending_review"
   | "approved"
   | "rejected";
 
-type ApplicationPhase = 
-  | "esihaku" 
-  | "nomination" 
-  | "apurahat" 
+type ExtendedApplicationStatus = ApplicationStatus | "draft" | "submitted";
+
+type ApplicationPhase =
+  | "esihaku"
+  | "nomination"
+  | "apurahat"
   | "vaihdon_jalkeen";
 
-type DocumentStatus = 
-  | "uploaded" 
-  | "processing" 
-  | "approved" 
-  | "rejected" 
+type DocumentStatus =
+  | "uploaded"
+  | "processing"
+  | "approved"
+  | "rejected"
   | "needs_revision";
 
 type ApplicationPhaseData = {
@@ -60,6 +62,20 @@ type ApplicationPhaseData = {
   submittedAt?: string;
   reviewedAt?: string;
   reviewNotes?: string;
+};
+
+type ExtendedApplicationPhaseData = {
+  phase: string;
+  data?: unknown;
+  documents: ApplicationDocument[];
+  submittedAt?: string | null;
+  status: ExtendedApplicationStatus;
+  completedAt?: string;
+  deadline?: string;
+  notes?: string;
+  reviewedAt?: string;
+  reviewNotes?: string;
+  reviewedBy?: string;
 };
 
 type ApplicationsResponse = {
@@ -75,6 +91,18 @@ type ApplicationsResponse = {
   updatedAt: string;
 };
 
+type ExtendedApplicationsResponse = {
+  userId: string;
+  esihaku?: ExtendedApplicationPhaseData;
+  nomination?: ExtendedApplicationPhaseData;
+  apurahat?: ExtendedApplicationPhaseData;
+  vaihdon_jalkeen?: ExtendedApplicationPhaseData;
+  applications: ExtendedApplicationPhaseData[];
+  currentPhase: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 type ApplicationDocument = {
   id: string;
   applicationId: string;
@@ -87,6 +115,21 @@ type ApplicationDocument = {
   mimeType: string;
   isRequired: boolean;
   status: DocumentStatus;
+  uploadedBy: string;
+};
+
+type ExtendedApplicationDocument = {
+  id: string;
+  applicationId: string;
+  applicationPhase: ApplicationPhase | string;
+  documentType: string;
+  fileName: string;
+  fileUrl: string;
+  uploadedAt: string;
+  fileSize: number;
+  mimeType: string;
+  isRequired?: boolean;
+  status?: DocumentStatus | string;
   uploadedBy: string;
 };
 
@@ -152,5 +195,9 @@ export type {
   ApplicationPhase,
   DocumentStatus,
   ApplicationTask,
-  ExternalLink
+  ExternalLink,
+  ExtendedApplicationStatus,
+  ExtendedApplicationPhaseData,
+  ExtendedApplicationsResponse,
+  ExtendedApplicationDocument
 };

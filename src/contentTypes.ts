@@ -67,7 +67,7 @@ type ApplicationPhaseData = {
 type ExtendedApplicationPhaseData = {
   phase: string;
   data?: unknown;
-  documents: ApplicationDocument[];
+  documents: ExtendedApplicationDocument[];
   submittedAt?: string | null;
   status: ExtendedApplicationStatus;
   completedAt?: string;

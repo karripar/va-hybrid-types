@@ -192,6 +192,7 @@ type ContactResponse = {
   responderEmail: string,
   message: string,
   createdAt: string,
+  sentAt: string
 };
 
 type ContactMessageResponse = {

@@ -206,6 +206,54 @@ type ContactMessageResponse = {
   responses?: ContactResponse[];
 };
 
+type ApplicationsProgresses = {
+  esihaku?: {
+    status: "not_started" | "in_progress" | "completed" | "pending_review";
+    completedAt?: string;
+  };
+  nomination?: {
+    status: "not_started" | "in_progress" | "completed" | "pending_review";
+    completedAt?: string;
+  };
+  grants?: {
+    erasmus?: {
+      status: "not_started" | "in_progress" | "completed" | "pending_review";
+      completedAt?: string;
+    };
+    kela?: {
+      status: "not_started" | "in_progress" | "completed" | "pending_review";
+      completedAt?: string;
+    };
+  };
+  postExchange?: {
+    status: "not_started" | "in_progress" | "completed" | "pending_review";
+    completedAt?: string;
+  };
+}
+type GrantsSummary = {
+  grants: unknown[];
+  erasmusGrants: unknown[];
+  kelaSupport?: unknown;
+  budgetEstimate?: unknown;
+  totalEstimatedSupport: number;
+}
+type GrantApplicationData = {
+  destination: string;
+  program: string;
+  estimatedAmount: number;
+}
+
+type BudgetEstimateData ={
+  id?: string;
+  userId?: string;
+  destination: string;
+  categories: Record<string, { estimatedCost: number; notes?: string }>;
+  totalEstimate?: number;
+  currency: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export type {
   PartnerSchool,
   DestinationResponse,
@@ -229,5 +277,10 @@ export type {
   // Contact message types
   ContactMessageInput,
   ContactMessageResponse,
-  ContactResponse
+  ContactResponse,
+// Application's progresses and grants' types
+  BudgetEstimateData,
+  GrantsSummary,
+  GrantApplicationData,
+  ApplicationsProgresses
 };

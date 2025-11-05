@@ -23,11 +23,85 @@ type DestinationWithCoordinatesResponse = {
   };
 };
 
+//Link based document system types:
+type DocumentSourceType = "google_drive" | "onedrive" | "dropbox" | "icloud" | "other_url";
+
+type DocumentPlatform = {
+  type: DocumentSourceType;
+  name: string; 
+  icon?: string; 
+  requiresPublicAccess: boolean; 
+};
+
+// URL  for platform validation & Instructions for users on how to get shareable link
+type PlatformURLPattern = {
+  platform: DocumentSourceType;
+  pattern: RegExp | string;
+  exampleUrl: string;
+  instructions: string; // Instructions here!
+};
+
+type SupportedPlatforms = {
+  google_drive: {
+    name: "Google Drive";
+    urlPatterns: string[];
+    sharingInstructions: string;
+  };
+  onedrive: {
+    name: "OneDrive";
+    urlPatterns: string[];
+    sharingInstructions: string;
+  };
+  dropbox: {
+    name: "Dropbox";
+    urlPatterns: string[];
+    sharingInstructions: string;
+  };
+  icloud: {
+    name: "iCloud";
+    urlPatterns: string[];
+    sharingInstructions: string;
+  };
+  other_url: {
+    name: "Other URL";
+    urlPatterns: string[];
+    sharingInstructions: string;
+  };
+};
+
+type DocumentLinkValidation = {
+  isValid: boolean;
+  isAccessible: boolean;
+  errorMessage?: string;
+  checkedAt: string;
+  statusCode?: number;
+};
+
+type DocumentLinkRequest = {
+  name: string;
+  url: string;
+  sourceType: DocumentSourceType;
+  documentType?: string;
+  notes?: string;
+};
+
+type DocumentLinkUpdate = {
+  name?: string;
+  url?: string;
+  sourceType?: DocumentSourceType;
+  notes?: string;
+};
+
 type Document = {
   id: string;
   name: string;
   url: string;
-  uploadedAt: string;
+  sourceType: DocumentSourceType;
+  platformName?: string; 
+  addedAt: string;
+  lastVerified?: string; // Last time link was verified as working
+  isAccessible?: boolean; 
+  accessPermission?: "public" | "restricted" | "unknown";
 };
 
 type ApplicationStatus =
@@ -116,12 +190,17 @@ type ApplicationDocument = {
   documentType: string;
   fileName: string;
   fileUrl: string;
-  uploadedAt: string;
-  fileSize: number;
-  mimeType: string;
+  sourceType: DocumentSourceType;
+  platformName?: string;
+  addedAt: string;
+  lastVerified?: string;
+  isAccessible?: boolean;
+  accessPermission?: "public" | "restricted" | "unknown";
+  fileSize?: number;
+  mimeType?: string;
   isRequired: boolean;
   status: DocumentStatus;
-  uploadedBy: string;
+  addedBy: string;
 };
 
 type ExtendedApplicationDocument = {
@@ -131,12 +210,17 @@ type ExtendedApplicationDocument = {
   documentType: string;
   fileName: string;
   fileUrl: string;
-  uploadedAt: string;
-  fileSize: number;
-  mimeType: string;
+  sourceType: DocumentSourceType;
+  platformName?: string;
+  addedAt: string;
+  lastVerified?: string;
+  isAccessible?: boolean;
+  accessPermission?: "public" | "restricted" | "unknown";
+  fileSize?: number;
+  mimeType?: string;
   isRequired?: boolean;
   status?: DocumentStatus | string;
-  uploadedBy: string;
+  addedBy: string;
 };
 
 type ApplicationTask = {
@@ -255,13 +339,149 @@ type BudgetEstimateData ={
   updatedAt?: string;
 }
 
+type GrantType = "erasmus_plus" | "kela" | "other";
+type GrantStatus = "not_started" | "in_progress" | "completed" | "approved" | "rejected";
+
+type GrantApplication = {
+  id: string;
+  userId: string;
+  grantType: GrantType;
+  status: GrantStatus;
+  destination: string;
+  program: string; 
+  estimatedAmount: number;
+  approvedAmount?: number;
+  applicationDate: string;
+  decisionDate?: string;
+  documents: string[]; // Document IDs
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Budget Categories from 
+type BudgetCategory = 
+  | "matkakulut"    
+  | "vakuutukset"         
+  | "asuminen"            
+  | "ruoka ja arki"        // Food and daily life
+  | "opintovalineet"; 
+
+type BudgetItem = {
+  category: BudgetCategory;
+  title: string;
+  description: string;
+  items: string[]; 
+  icon: string; 
+}
+
+type BudgetEstimate = {
+  id: string;
+  userId: string;
+  destination: string;
+  categories: {
+    [key in BudgetCategory]: {
+      estimatedCost: number;
+      notes?: string;
+    };
+  };
+  totalEstimate: number;
+  currency: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Erasmus+ types from  
+type ErasmusPlusGrantType = 
+  | "base_grant"                    
+  | "travel_grant"                 
+  | "green_travel_supplement" 
+  | "inclusion_support";  
+type ErasmusPlusGrant = {
+  id: string;
+  userId: string;
+  grantType: ErasmusPlusGrantType;
+  title: string;
+  description: string;
+  status: GrantStatus;
+  estimatedAmount?: number;
+  documents: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+//  calculator
+type GrantCalculator = {
+  destination: string;
+  program: string; 
+  baseAmount: number;
+  travelDistance?: number; 
+  greenTravel?: boolean; 
+  inclusionSupport?: boolean; 
+  totalEstimated: number;
+  currency: string;
+}
+
+type GrantSearchFilters = {
+  destination?: string;
+  program?: string;
+  minAmount?: number;
+  maxAmount?: number;
+}
+
+// Kela 
+type KelaSupport = {
+  id: string;
+  userId: string;
+  status: GrantStatus;
+  monthlyAmount: number;
+  duration: number;
+  totalAmount: number;
+  studyAbroadConfirmation: boolean; 
+  applicationSubmitted: boolean;
+  documents: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Response types for API
+type GrantApplicationResponse = {
+  grants: GrantApplication[];
+  erasmusGrants: ErasmusPlusGrant[];
+  kelaSupport?: KelaSupport;
+  budgetEstimate?: BudgetEstimate;
+  totalEstimatedSupport: number;
+}
+
+type CreateGrantApplicationRequest = {
+  grantType: GrantType | ErasmusPlusGrantType;
+  destination: string;
+  program: string;
+  estimatedAmount: number;
+}
+
+type UpdateGrantApplicationRequest = {
+  status?: GrantStatus;
+  estimatedAmount?: number;
+  approvedAmount?: number;
+  documents?: string[];
+}
+
 export type {
   PartnerSchool,
   DestinationResponse,
   PartnerSchoolWithCoordinates,
   DestinationWithCoordinatesResponse,
   ProfileResponse,
+  // Link-based system types
   Document,
+  DocumentSourceType,
+  DocumentPlatform,
+  PlatformURLPattern,
+  SupportedPlatforms,
+  DocumentLinkValidation,
+  DocumentLinkRequest,
+  DocumentLinkUpdate,
+  // Application types
   ApplicationsResponse,
   ApplicationDocument,
   ApplicationPhaseData,
@@ -279,9 +499,24 @@ export type {
   ContactMessageInput,
   ContactMessageResponse,
   ContactResponse,
-// Application's progresses and grants' types
+  // Application's progresses and grants' types
   BudgetEstimateData,
   GrantsSummary,
   GrantApplicationData,
-  ApplicationsProgresses
+  ApplicationsProgresses,
+  // Grant and financial support types
+  GrantType,
+  GrantStatus,
+  GrantApplication,
+  BudgetCategory,
+  BudgetItem,
+  BudgetEstimate,
+  ErasmusPlusGrantType,
+  ErasmusPlusGrant,
+  GrantCalculator,
+  GrantSearchFilters,
+  KelaSupport,
+  GrantApplicationResponse,
+  CreateGrantApplicationRequest,
+  UpdateGrantApplicationRequest
 };

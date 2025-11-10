@@ -35,7 +35,7 @@ type ProfileResponse = {
   userName: string;
   email: string;
   registeredAt: string;
-  user_level_id: number;
+  user_level_id: number;  // 1 = User, 2 = Admin
   favorites: string[];
   documents: Document[];
   exchangeBadge?: boolean;

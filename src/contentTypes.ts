@@ -466,17 +466,151 @@ type UpdateGrantApplicationRequest = {
   approvedAmount?: number;
   documents?: string[];
 }
+
+/**
+ * Status of an application stage
+ */
+type ApplicationStageStatus = 
+  | "not_started"
+  | "in_progress"
+  | "pending_review"
+  | "completed";
+
+/**
+ * Application stage definition
+ */
 type ApplicationStage = {
   id: string;
   phase: ApplicationPhase;
   title: string;
   description: string;
-  status: ApplicationStatus;
   requiredDocuments: string[];
   optionalDocuments?: string[];
-  externalLinks?: { title: string; url: string; description: string }[];
+  externalLinks?: ExternalLink[];
+  deadline?: string; // ISO 8601 date string
+  order: number;
+}
+
+/**
+ * User's progress on an application stage
+ */
+type UserApplicationProgress = {
+  id: string;
+  userId: string;
+  stageId: string;
+  status: ApplicationStageStatus;
+  completedAt?: string; // ISO 8601 date string
+  createdAt: string; // ISO 8601 date string
+  updatedAt: string; // ISO 8601 date string
+}
+
+/**
+ * Application stage with user's progress information
+ */
+type ApplicationStageWithProgress = ApplicationStage & {
+  status: ApplicationStageStatus;
+  completedAt?: string; // ISO 8601 date string
+}
+
+/**
+ * Request body for updating stage status
+ */
+type UpdateStageStatusRequest = {
+  status: ApplicationStageStatus;
+}
+
+/**
+ * Response from updating stage status
+ */
+type UpdateStageStatusResponse = {
+  id: string;
+  phase: ApplicationPhase;
+  title: string;
+  description: string;
+  status: ApplicationStageStatus;
+  requiredDocuments: string[];
+  optionalDocuments?: string[];
   deadline?: string;
   completedAt?: string;
+  updatedAt: string;
+}
+
+/**
+ * Event triggered when stage status changes
+ */
+type StageStatusChangeEvent = {
+  userId: string;
+  stageId: string;
+  oldStatus: ApplicationStageStatus;
+  newStatus: ApplicationStageStatus;
+  timestamp: string;
+  triggeredBy: "user" | "system" | "admin";
+}
+
+/**
+ * Summary of progress for a specific phase
+ */
+type PhaseProgressSummary = {
+  phase: ApplicationPhase;
+  totalStages: number;
+  completedStages: number;
+  inProgressStages: number;
+  notStartedStages: number;
+  pendingReviewStages: number;
+  progressPercentage: number; // 0-100
+  nextStage?: ApplicationStage;
+}
+
+//Kokemukset ja vinkit types
+type ExchangeStory = {
+  id: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  
+  // Exchange details
+  destination: string;
+  country: string;
+  university: string;
+  duration: number; 
+  exchangeDate: string;
+  
+  // Story content
+  title: string;
+  summary: string; 
+  highlights: string[]; 
+  challenges?: string[]; 
+  tips: string[]; 
+  
+  // Media
+  coverPhoto: string; 
+  photos?: string[]; // Gallery URLs
+  
+  // Ratings (1-5)
+  ratings: {
+    overall: number;
+    culture: number;
+    academics: number;
+    social: number;
+    costOfLiving: number;
+  };
+  
+  // Engagement
+  likes: number;
+  saves: number;
+  
+  // Metadata
+  status: "draft" | "published" | "archived";
+  tags: string[]; 
+  createdAt: string;
+  updatedAt: string;
+}
+type StoryReaction ={
+  id: string;
+  userId: string;
+  storyId: string;
+  type: "like" | "save";
+  createdAt: string;
 }
 
 export type {
@@ -524,7 +658,16 @@ export type {
   BudgetCategory,
   BudgetItem,
   BudgetEstimate,
+  // Application stage types
+  ApplicationStageStatus,
   ApplicationStage,
+  UserApplicationProgress,
+  ApplicationStageWithProgress,
+  UpdateStageStatusRequest,
+  UpdateStageStatusResponse,
+  StageStatusChangeEvent,
+  PhaseProgressSummary,
+  // Erasmus+ types
   ErasmusPlusGrantType,
   ErasmusPlusGrant,
   GrantCalculator,
@@ -532,5 +675,8 @@ export type {
   KelaSupport,
   GrantApplicationResponse,
   CreateGrantApplicationRequest,
-  UpdateGrantApplicationRequest
+  UpdateGrantApplicationRequest,
+  // Exchange stories types
+  ExchangeStory,
+  StoryReaction
 };

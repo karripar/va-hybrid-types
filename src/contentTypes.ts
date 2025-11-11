@@ -378,13 +378,14 @@ type BudgetEstimate = {
   id: string;
   userId: string;
   destination: string;
-  categories: {
-    [key in BudgetCategory]: {
-      estimatedCost: number;
-      notes?: string;
-    };
-  };
+  grantAmount: number;
+   categories: Record<string, {
+    estimatedCost: number;
+    notes?: string;
+  }>;
   totalEstimate: number;
+  balance?: number; // grantAmount - totalEstimate
+
   currency: string;
   createdAt: string;
   updatedAt: string;
@@ -465,6 +466,18 @@ type UpdateGrantApplicationRequest = {
   approvedAmount?: number;
   documents?: string[];
 }
+type ApplicationStage = {
+  id: string;
+  phase: ApplicationPhase;
+  title: string;
+  description: string;
+  status: ApplicationStatus;
+  requiredDocuments: string[];
+  optionalDocuments?: string[];
+  externalLinks?: { title: string; url: string; description: string }[];
+  deadline?: string;
+  completedAt?: string;
+}
 
 export type {
   PartnerSchool,
@@ -511,6 +524,7 @@ export type {
   BudgetCategory,
   BudgetItem,
   BudgetEstimate,
+  ApplicationStage,
   ErasmusPlusGrantType,
   ErasmusPlusGrant,
   GrantCalculator,

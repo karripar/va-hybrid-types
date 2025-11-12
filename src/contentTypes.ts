@@ -207,6 +207,7 @@ type ContactMessageResponse = {
   responses?: ContactResponse[];
 };
 
+
 type ApplicationsProgresses = {
   esihaku?: {
     status: "not_started" | "in_progress" | "completed" | "pending_review";

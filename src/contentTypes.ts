@@ -757,6 +757,20 @@ type StoryReaction ={
   type: "like" | "save";
   createdAt: string;
 }
+interface StoriesResponse {
+  stories: ExchangeStory[];
+  total: number;
+  hasMore: boolean;
+}
+
+interface StoryFilters {
+  country?: string;
+  university?: string;
+  tags?: string[];
+  minRating?: number;
+  search?: string;
+  sort?: "recent" | "popular" | "rating";
+}
 
 export type {
   PartnerSchool,
@@ -838,5 +852,7 @@ export type {
   UpdateGrantApplicationRequest,
   // Exchange stories types
   ExchangeStory,
-  StoryReaction
+  StoryReaction,
+  StoriesResponse,
+  StoryFilters
 };

@@ -8,6 +8,6 @@ type UserLevel = {
 
 type UserWithLevel = ProfileResponse & { level: UserLevel };
 
-type TokenContent = Pick<ProfileResponse, "id" | "user_level_id">;
+type TokenContent = Pick<ProfileResponse, "_id" | "user_level_id">;
 
 export type { UserWithLevel, TokenContent };

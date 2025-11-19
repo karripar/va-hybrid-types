@@ -359,13 +359,23 @@ type GrantApplication = {
   updatedAt: string;
 }
 
-// Budget Categories from 
+/**
+ * Budget category types - standardized with underscores
+ */
 type BudgetCategory = 
   | "matkakulut"    
   | "vakuutukset"         
   | "asuminen"            
-  | "ruoka ja arki"        // Food and daily life
-  | "opintovalineet"; 
+  | "ruoka_ja_arki"
+  | "opintovalineet";
+
+/**
+ * Individual category expense details
+ */
+type CategoryExpense = {
+  amount: number;
+  notes: string;
+}
 
 type BudgetItem = {
   category: BudgetCategory;
@@ -375,21 +385,168 @@ type BudgetItem = {
   icon: string; 
 }
 
+// budget information for a user
+type Budget = {
+  budgetId: string;
+  userId: string;
+  destination?: string;
+  exchangeProgramId?: string;
+  categories: Record<BudgetCategory, CategoryExpense>;
+  totalAmount: number;
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+}
+
+/**
+ * Request body for creating/updating a budget
+ */
+type CreateBudgetRequest = {
+  destination?: string;
+  exchangeProgramId?: string;
+  categories: Record<BudgetCategory, CategoryExpense>;
+  totalAmount: number;
+}
+
+/**
+ * Response from budget API endpoints
+ */
+type BudgetResponse = {
+  success: boolean;
+  budgetId?: string;
+  message?: string;
+  data?: Budget;
+  error?: ApiError;
+}
+
+/**
+ * Budget history item
+ */
+type BudgetHistoryItem = {
+  budgetId: string;
+  destination?: string;
+  totalAmount: number;
+  createdAt: string;
+}
+
+/**
+ * Response for budget history endpoint
+ */
+type BudgetHistoryResponse = {
+  success: boolean;
+  data: BudgetHistoryItem[];
+  error?: ApiError;
+}
+
+//budget estimate type ->  for backward compatibility
 type BudgetEstimate = {
   id: string;
   userId: string;
   destination: string;
   grantAmount: number;
-   categories: Record<string, {
+  categories: Record<string, {
     estimatedCost: number;
     notes?: string;
   }>;
   totalEstimate: number;
   balance?: number; // grantAmount - totalEstimate
-
   currency: string;
   createdAt: string;
   updatedAt: string;
+}
+
+/**
+ * Calculator operation types
+ */
+type CalculatorOperation = "add" | "subtract" | "multiply" | "divide";
+
+/**
+ * Calculator history entry
+ */
+type CalculatorHistoryEntry = {
+  historyId: string;
+  userId: string;
+  calculation: string; // Format: "500 + 300 = 800"
+  result: number;
+  timestamp: string; // ISO date string
+}
+
+/**
+ * Request body for saving calculator history
+ */
+type SaveCalculatorHistoryRequest = {
+  calculation: string;
+  result: number;
+}
+
+/**
+ * Response from calculator history endpoints
+ */
+type CalculatorHistoryResponse = {
+  success: boolean;
+  historyId?: string;
+  data?: CalculatorHistoryEntry[];
+  error?: ApiError;
+}
+
+/**
+ * Budget comparison with grant estimate
+ */
+type BudgetGrantComparison = {
+  budgetTotal: number;
+  grantEstimate: number;
+  difference: number; // Positive if grant covers budget, negative if over budget
+  coveragePercentage: number; // Percentage of budget covered by grant
+  status: "sufficient" | "insufficient" | "exact";
+}
+
+/**
+ * Extended budget estimate with grant information
+ */
+type BudgetEstimateWithGrant = {
+  budget: Budget;
+  grantEstimate?: number;
+  comparison?: BudgetGrantComparison;
+  recommendations?: string[]; // Recommendations for the user
+}
+
+/**
+ * API Error codes specific to budget calculator
+ */
+type BudgetErrorCode =
+  | "INVALID_USER_ID"
+  | "INVALID_BUDGET_DATA"
+  | "BUDGET_NOT_FOUND"
+  | "UNAUTHORIZED"
+  | "SERVER_ERROR"
+  | "VALIDATION_ERROR"
+  | "DUPLICATE_BUDGET";
+//  calculator (Poistan myöhemmin?)
+type GrantCalculator = {
+  destination: string;
+  program: string; 
+  baseAmount: number;
+  travelDistance?: number; 
+  greenTravel?: boolean; 
+  inclusionSupport?: boolean; 
+  totalEstimated: number;
+  currency: string;
+}
+/**
+ * Generic API error structure
+ */
+type ApiError = {
+  code: BudgetErrorCode | string;
+  message: string;
+  details?: Record<string, any>;
+}
+
+/**
+ * Validation error for specific fields
+ */
+type ValidationError = {
+  field: string;
+  message: string;
+  value?: any;
 }
 
 // Erasmus+ types from  
@@ -409,18 +566,6 @@ type ErasmusPlusGrant = {
   documents: string[];
   createdAt: string;
   updatedAt: string;
-}
-
-//  calculator
-type GrantCalculator = {
-  destination: string;
-  program: string; 
-  baseAmount: number;
-  travelDistance?: number; 
-  greenTravel?: boolean; 
-  inclusionSupport?: boolean; 
-  totalEstimated: number;
-  currency: string;
 }
 
 type GrantSearchFilters = {
@@ -613,6 +758,20 @@ type StoryReaction ={
   type: "like" | "save";
   createdAt: string;
 }
+interface StoriesResponse {
+  stories: ExchangeStory[];
+  total: number;
+  hasMore: boolean;
+}
+
+interface StoryFilters {
+  country?: string;
+  university?: string;
+  tags?: string[];
+  minRating?: number;
+  search?: string;
+  sort?: "recent" | "popular" | "rating";
+}
 
 export type {
   PartnerSchool,
@@ -647,7 +806,6 @@ export type {
   ContactMessageInput,
   ContactMessageResponse,
   ContactResponse,
-  // Application's progresses and grants' types
   BudgetEstimateData,
   GrantsSummary,
   GrantApplicationData,
@@ -656,9 +814,25 @@ export type {
   GrantType,
   GrantStatus,
   GrantApplication,
+  // Budget Calculator types
   BudgetCategory,
+  CategoryExpense,
   BudgetItem,
+  Budget,
+  CreateBudgetRequest,
+  BudgetResponse,
+  BudgetHistoryItem,
+  BudgetHistoryResponse,
   BudgetEstimate,
+  CalculatorOperation,
+  CalculatorHistoryEntry,
+  SaveCalculatorHistoryRequest,
+  CalculatorHistoryResponse,
+  BudgetGrantComparison,
+  BudgetEstimateWithGrant,
+  BudgetErrorCode,
+  ApiError,
+  ValidationError,
   // Application stage types
   ApplicationStageStatus,
   ApplicationStage,
@@ -671,7 +845,7 @@ export type {
   // Erasmus+ types
   ErasmusPlusGrantType,
   ErasmusPlusGrant,
-  GrantCalculator,
+  GrantCalculator, // Poistan myöhemmin?
   GrantSearchFilters,
   KelaSupport,
   GrantApplicationResponse,
@@ -679,5 +853,7 @@ export type {
   UpdateGrantApplicationRequest,
   // Exchange stories types
   ExchangeStory,
-  StoryReaction
+  StoryReaction,
+  StoriesResponse,
+  StoryFilters
 };

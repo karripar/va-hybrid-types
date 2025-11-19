@@ -244,7 +244,7 @@ type ExternalLink = {
 };
 
 type ProfileResponse = {
-  id: string;
+  _id: string;
   userName: string;
   email: string;
   registeredAt: string;

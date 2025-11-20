@@ -360,7 +360,7 @@ type GrantApplication = {
 }
 
 /**
- * Budget category types - standardized with underscores
+ * Budget category types
  */
 type BudgetCategory = 
   | "matkakulut"    
@@ -708,69 +708,98 @@ type PhaseProgressSummary = {
 }
 
 //Kokemukset ja vinkit types
+/**
+ * Exchange Story --> Exchange students'  report
+ */
 type ExchangeStory = {
   id: string;
-  userId: string;
+  country: string;
+  city: string;
+  university: string;
   userName: string;
   userAvatar?: string;
-  
-  // Exchange details
-  destination: string;
-  country: string;
-  university: string;
-  duration: number; 
-  exchangeDate: string;
-  
-  // Story content
   title: string;
-  summary: string; 
-  highlights: string[]; 
-  challenges?: string[]; 
-  tips: string[]; 
-  
-  // Media
-  coverPhoto: string; 
-  photos?: string[]; // Gallery URLs
-  
-  // Ratings (1-5)
+  summary: string;
+  fullReport: string;
+  highlights: string[];
+  exchangeDate: string;
+  duration: number;
+  tags: string[];
+  coverPhoto: string;
   ratings: {
     overall: number;
-    culture: number;
     academics: number;
     social: number;
-    costOfLiving: number;
+    accommodation: number;
   };
-  
-  // Engagement
+  isFeatured: boolean;
+  isApproved: boolean;
   likes: number;
-  saves: number;
-  
-  // Metadata
-  status: "draft" | "published" | "archived";
-  tags: string[]; 
   createdAt: string;
   updatedAt: string;
+  createdBy: string;
 }
-type StoryReaction ={
+
+type StoryReaction = {
   id: string;
   userId: string;
   storyId: string;
   type: "like" | "save";
   createdAt: string;
 }
-interface StoriesResponse {
+
+type ExchangeStoriesResponse = {
   stories: ExchangeStory[];
-  total: number;
-  hasMore: boolean;
 }
 
-interface StoryFilters {
+/**
+ * Story filters for search/filter functionality
+ */
+type StoryFilters = {
   country?: string;
-  university?: string;
-  tags?: string[];
-  minRating?: number;
+  city?: string;
   search?: string;
+  minRating?: number;
   sort?: "recent" | "popular" | "rating";
+  isFeatured?: boolean;
+}
+
+//types for countries/cities aggregation
+
+type CountriesResponse = {
+  countries: Array<{
+    country: string;
+    count: number;
+    cities: Array<{
+      city: string;
+      count: number;
+    }>;
+  }>;
+}
+
+
+// Creating story request body
+type CreateStoryRequest = {
+  country: string;
+  city: string;
+  university: string;
+  userName: string;
+  userAvatar?: string;
+  title: string;
+  summary: string;
+  fullReport: string;
+  highlights: string[];
+  exchangeDate: string;
+  duration: number;
+  tags: string[];
+  coverPhoto: string;
+  ratings: {
+    overall: number;
+    academics: number;
+    social: number;
+    accommodation: number;
+  };
+  isFeatured?: boolean;
 }
 
 export type {
@@ -854,6 +883,8 @@ export type {
   // Exchange stories types
   ExchangeStory,
   StoryReaction,
-  StoriesResponse,
-  StoryFilters
+  ExchangeStoriesResponse,
+  StoryFilters,
+  CountriesResponse,
+  CreateStoryRequest
 };

@@ -751,6 +751,7 @@ type StoryReaction = {
 
 type ExchangeStoriesResponse = {
   stories: ExchangeStory[];
+  hasMore: boolean;
 }
 
 /**

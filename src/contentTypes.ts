@@ -748,6 +748,7 @@ type StoryReaction = {
   createdAt: string;
 }
 
+
 type ExchangeStoriesResponse = {
   stories: ExchangeStory[];
 }
@@ -758,6 +759,8 @@ type ExchangeStoriesResponse = {
 type StoryFilters = {
   country?: string;
   city?: string;
+  university?: string;
+  tags?: string[];
   search?: string;
   minRating?: number;
   sort?: "recent" | "popular" | "rating";

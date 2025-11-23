@@ -255,6 +255,7 @@ type ProfileResponse = {
   avatarUrl?: string;
   linkedinUrl?: string;
   applications?: ApplicationsResponse;
+  isBlocked?: boolean;
   applicationProgress?: {
     overallProgress: number;
     currentPhase: ApplicationPhase;

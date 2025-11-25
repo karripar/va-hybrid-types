@@ -2,6 +2,7 @@
   country: string;
   title: string;
   link: string;
+  studyField?: string;
 };
 
 type PartnerSchoolWithCoordinates = PartnerSchool & {

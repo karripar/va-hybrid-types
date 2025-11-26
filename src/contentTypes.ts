@@ -2,6 +2,7 @@
   country: string;
   title: string;
   link: string;
+  studyField?: string;
 };
 
 type PartnerSchoolWithCoordinates = PartnerSchool & {
@@ -255,6 +256,7 @@ type ProfileResponse = {
   avatarUrl?: string;
   linkedinUrl?: string;
   applications?: ApplicationsResponse;
+  isBlocked?: boolean;
   applicationProgress?: {
     overallProgress: number;
     currentPhase: ApplicationPhase;

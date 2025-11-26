@@ -354,7 +354,7 @@ type GrantApplication = {
   approvedAmount?: number;
   applicationDate: string;
   decisionDate?: string;
-  documents: string[]; // Document IDs
+  documents: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -747,6 +747,10 @@ type StoryReaction = {
   type: "like" | "save";
   createdAt: string;
 }
+type PaginationOptions = {
+  offset?: number;
+  limit?: number;
+};
 
 
 type ExchangeStoriesResponse = {
@@ -878,7 +882,7 @@ export type {
   // Erasmus+ types
   ErasmusPlusGrantType,
   ErasmusPlusGrant,
-  GrantCalculator, // Poistan myöhemmin?
+  GrantCalculator,
   GrantSearchFilters,
   KelaSupport,
   GrantApplicationResponse,
@@ -890,5 +894,6 @@ export type {
   ExchangeStoriesResponse,
   StoryFilters,
   CountriesResponse,
-  CreateStoryRequest
+  CreateStoryRequest,
+  PaginationOptions
 };
